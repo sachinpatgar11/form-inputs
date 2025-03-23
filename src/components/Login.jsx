@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Input from "./Input";
+import { isEmail, isNotEmpty, hasMinLength } from "../util/validation.js";
 
 export default function Login() {
   const [enteredValues, setenteredValues] = useState({
@@ -13,9 +14,11 @@ export default function Login() {
   });
 
   const emailIsInvalid =
-    didEdit.email != "" && !enteredValues.email.includes("@");
+    didEdit.email != "" &&
+    !isEmail(enteredValues.email) &&
+    !isNotEmpty(enteredValues.email);
   const passwordIsInvalid =
-    didEdit.password && enteredValues.password.trim().length < 6;
+    didEdit.password && !hasMinLength(enteredValues.password, 6);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -66,32 +69,6 @@ export default function Login() {
           value={enteredValues.password}
           onChange={(e) => handleInputChange("password", e.target.value)}
         />
-
-        {/* <div className="control no-margin">
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            onBlur={() => handleInputBlur("email")}
-            value={enteredValues.email}
-            onChange={(e) => handleInputChange("email", e.target.value)}
-          />
-          <div className="control-error">
-            {emailIsInvalid && <p>Please enter a valid email address</p>}
-          </div>
-        </div> */}
-
-        {/* <div className="control no-margin">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={enteredValues.password}
-            onChange={(e) => handleInputChange("password", e.target.value)}
-          />
-        </div> */}
       </div>
 
       <p className="form-actions">
